@@ -1,0 +1,121 @@
+<html ng-app>
+<head>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet"
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="css/biodata.css">
+
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+
+<script src="js/data.js">
+	
+</script>
+<script src="js/enquire.js">
+	
+</script>
+
+<script>
+	function SimpleController($scope) {
+		$scope.biodataArray = data;
+	}
+	$(function() {
+		$("#accordion").accordion({
+			collapsible : true
+		});
+	});
+	$(document).ready(
+			function() {
+				$("#tabs").tabs().addClass(
+						"ui-tabs-vertical ui-tabs-nav ui-helper-clearfix").css("display","none");
+			});
+	enquire.register("screen and (max-width: 1120px)", {
+		// OPTIONAL
+		// If supplied, triggered when a media query matches.
+		match : function() {
+			// alert("Match called ");
+			$("#accordion").css("display", "inline-block");
+			$("#tabs").css("display", "none");
+			alert( "1 Match called ");
+		},
+
+		// OPTIONAL
+		// If supplied, triggered when the media query
+		// transitions
+		// *from a matched state to an unmatched state*.
+		unmatch : function() {
+			$("#tabs").css("display", "inline-block");
+			$("#accordion").css("display", "none");
+			alert( "1 unMatch called ");
+		},
+
+		// OPTIONAL
+		// If supplied, triggered once, when the handler is
+		// registered.
+		setup : function() {
+			// MyBrowserProfileApp.createTabs();
+			$("#tabs").css("display", "none");
+			$("#accordion").css("display", "none");
+			 alert("setup called ");
+		},
+
+		// OPTIONAL, defaults to false
+		// If set to true, defers execution of the setup
+		// function
+		// until the first time the media query is matched
+		deferSetup : true,
+
+		// OPTIONAL
+		// If supplied, triggered when handler is unregistered.
+		// Place cleanup code here
+		destroy : function() {
+
+			// alert("destroy called ");
+		}
+	});
+	
+	/*enquire.register("screen and (min-width: 1120px) and (max-width : 1400px)", {
+		// OPTIONAL
+		// If supplied, triggered when a media query matches.
+		match : function() {
+			// alert("Match called ");
+			$("#tabs").css("display", "inline-block");
+			$("#accordion").css("display", "none");
+			alert( "Match called ");
+		} 
+		});
+*/
+</script>
+
+</head>
+<body>
+	<div id="tabs" ng-controller='SimpleController'>
+		<ul id="bio-navlist">
+			<li ng-repeat='biodata in biodataArray'><a
+				href="#tabs{{biodata.id}}">{{ biodata.firstName }}</a></li>
+		</ul>
+
+		<div ng-repeat='biodata in biodataArray' id="tabs{{biodata.id}}">
+			<img src="{{biodata.picture }}"> </img>
+			<h6>{{biodata.firstName}} {{biodata.lastName}}</h6>
+			<p>{{ biodata.bio }}</p>
+		</div>
+	</div>
+
+	<div ng-controller='SimpleController'>
+		<div id="accordion">
+			<h6 data-ng-repeat-start='biodata in biodataArray'>{{
+				biodata.firstName }}</h6>
+			<div data-ng-repeat-end>
+				<img src="{{ biodata.picture }}"> </img>
+				<p>{{ biodata.bio }}</p>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
